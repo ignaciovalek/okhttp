@@ -446,8 +446,8 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
     @Nullable Proxy proxy;
     List<Protocol> protocols;
     List<ConnectionSpec> connectionSpecs;
-    final List<Interceptor> interceptors = new ArrayList<>();
-    final List<Interceptor> networkInterceptors = new ArrayList<>();
+    final List<Interceptor> interceptors = new ArrayList<Interceptor>();
+    final List<Interceptor> networkInterceptors = new ArrayList<Interceptor>();
     EventListener.Factory eventListenerFactory;
     ProxySelector proxySelector;
     CookieJar cookieJar;
@@ -487,9 +487,9 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
       followSslRedirects = true;
       followRedirects = true;
       retryOnConnectionFailure = true;
-      connectTimeout = 10_000;
-      readTimeout = 10_000;
-      writeTimeout = 10_000;
+      connectTimeout = 10000;
+      readTimeout = 10000;
+      writeTimeout = 10000;
       pingInterval = 0;
     }
 
@@ -828,7 +828,7 @@ public class OkHttpClient implements Cloneable, Call.Factory, WebSocket.Factory 
      */
     public Builder protocols(List<Protocol> protocols) {
       // Create a private copy of the list.
-      protocols = new ArrayList<>(protocols);
+      protocols = new ArrayList<Protocol>(protocols);
 
       // Validate that the list has everything we require and nothing we forbid.
       if (!protocols.contains(Protocol.HTTP_1_1)) {

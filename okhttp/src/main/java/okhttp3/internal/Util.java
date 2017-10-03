@@ -189,7 +189,7 @@ public final class Util {
 
   /** Returns an immutable copy of {@code list}. */
   public static <T> List<T> immutableList(List<T> list) {
-    return Collections.unmodifiableList(new ArrayList<>(list));
+    return Collections.unmodifiableList(new ArrayList<T>(list));
   }
 
   /** Returns an immutable list containing {@code elements}. */
@@ -214,7 +214,7 @@ public final class Util {
   @SuppressWarnings("unchecked")
   public static String[] intersect(
       Comparator<? super String> comparator, String[] first, String[] second) {
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     for (String a : first) {
       for (String b : second) {
         if (comparator.compare(a, b) == 0) {

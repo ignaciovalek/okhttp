@@ -51,7 +51,7 @@ public final class RouteSelector {
   private List<InetSocketAddress> inetSocketAddresses = Collections.emptyList();
 
   /* State for negotiating failed routes */
-  private final List<Route> postponedRoutes = new ArrayList<>();
+  private final List<Route> postponedRoutes = new ArrayList<Route>();
 
   public RouteSelector(Address address, RouteDatabase routeDatabase, Call call,
       EventListener eventListener) {
@@ -76,7 +76,7 @@ public final class RouteSelector {
     }
 
     // Compute the next set of routes to attempt.
-    List<Route> routes = new ArrayList<>();
+    List<Route> routes = new ArrayList<Route>();
     while (hasNextProxy()) {
       // Postponed routes are always tried last. For example, if we have 2 proxies and all the
       // routes for proxy1 should be postponed, we'll move to proxy2. Only after we've exhausted
@@ -153,7 +153,7 @@ public final class RouteSelector {
   /** Prepares the socket addresses to attempt for the current proxy or host. */
   private void resetNextInetSocketAddress(Proxy proxy) throws IOException {
     // Clear the addresses. Necessary if getAllByName() below throws!
-    inetSocketAddresses = new ArrayList<>();
+    inetSocketAddresses = new ArrayList<InetSocketAddress>();
 
     String socketHost;
     int socketPort;
@@ -235,7 +235,7 @@ public final class RouteSelector {
     }
 
     public List<Route> getAll() {
-      return new ArrayList<>(routes);
+      return new ArrayList<Route>(routes);
     }
   }
 }

@@ -169,11 +169,18 @@ class AndroidPlatform extends Platform {
       Method getInstanceMethod = networkPolicyClass.getMethod("getInstance");
       Object networkSecurityPolicy = getInstanceMethod.invoke(null);
       return api24IsCleartextTrafficPermitted(hostname, networkPolicyClass, networkSecurityPolicy);
-    } catch (ClassNotFoundException | NoSuchMethodException e) {
+    } catch (ClassNotFoundException e) {
       return super.isCleartextTrafficPermitted(hostname);
-    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-      throw assertionError("unable to determine cleartext support", e);
-    }
+    } catch (NoSuchMethodException e) {
+        return super.isCleartextTrafficPermitted(hostname);
+    } catch (IllegalAccessException e) {
+    	throw assertionError("unable to determine cleartext support", e);
+    } catch (IllegalArgumentException e) {
+    	throw assertionError("unable to determine cleartext support", e);
+    } catch (InvocationTargetException e) {
+    	throw assertionError("unable to determine cleartext support", e);
+	}
+    
   }
 
   private boolean api24IsCleartextTrafficPermitted(String hostname, Class<?> networkPolicyClass,
@@ -181,7 +188,8 @@ class AndroidPlatform extends Platform {
     try {
       Method isCleartextTrafficPermittedMethod = networkPolicyClass
           .getMethod("isCleartextTrafficPermitted", String.class);
-      return (boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy, hostname);
+//      return (boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy, hostname);
+      return (Boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy, hostname);
     } catch (NoSuchMethodException e) {
       return api23IsCleartextTrafficPermitted(hostname, networkPolicyClass, networkSecurityPolicy);
     }
@@ -192,7 +200,8 @@ class AndroidPlatform extends Platform {
     try {
       Method isCleartextTrafficPermittedMethod = networkPolicyClass
           .getMethod("isCleartextTrafficPermitted");
-      return (boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy);
+//      return (boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy);
+      return (Boolean) isCleartextTrafficPermittedMethod.invoke(networkSecurityPolicy);
     } catch (NoSuchMethodException e) {
       return super.isCleartextTrafficPermitted(hostname);
     }
@@ -240,18 +249,18 @@ class AndroidPlatform extends Platform {
             "org.apache.harmony.xnet.provider.jsse.SSLParametersImpl");
       }
 
-      OptionalMethod<Socket> setUseSessionTickets = new OptionalMethod<>(
+      OptionalMethod<Socket> setUseSessionTickets = new OptionalMethod<Socket>(
           null, "setUseSessionTickets", boolean.class);
-      OptionalMethod<Socket> setHostname = new OptionalMethod<>(
+      OptionalMethod<Socket> setHostname = new OptionalMethod<Socket>(
           null, "setHostname", String.class);
       OptionalMethod<Socket> getAlpnSelectedProtocol = null;
       OptionalMethod<Socket> setAlpnProtocols = null;
 
       if (supportsAlpn()) {
         getAlpnSelectedProtocol
-            = new OptionalMethod<>(byte[].class, "getAlpnSelectedProtocol");
+            = new OptionalMethod<Socket>(byte[].class, "getAlpnSelectedProtocol");
         setAlpnProtocols
-            = new OptionalMethod<>(null, "setAlpnProtocols", byte[].class);
+            = new OptionalMethod<Socket>(null, "setAlpnProtocols", byte[].class);
       }
 
       return new AndroidPlatform(sslParametersClass, setUseSessionTickets, setHostname,

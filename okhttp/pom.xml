@@ -16,6 +16,7 @@
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.google.android</groupId>

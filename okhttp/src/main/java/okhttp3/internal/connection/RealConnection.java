@@ -108,7 +108,7 @@ public final class RealConnection extends Http2Connection.Listener implements Co
   public int allocationLimit = 1;
 
   /** Current streams carried by this connection. */
-  public final List<Reference<StreamAllocation>> allocations = new ArrayList<>();
+  public final List<Reference<StreamAllocation>> allocations = new ArrayList<Reference<StreamAllocation>>();
 
   /** Nanotime timestamp when {@code allocations.size()} reached zero. */
   public long idleAtNanos = Long.MAX_VALUE;

@@ -78,7 +78,7 @@ public final class Http2Connection implements Closeable {
    * on {@link #executor}.
    */
   final Listener listener;
-  final Map<Integer, Http2Stream> streams = new LinkedHashMap<>();
+  final Map<Integer, Http2Stream> streams = new LinkedHashMap<Integer, Http2Stream>();
   final String hostname;
   int lastGoodStreamId;
   int nextStreamId;
@@ -339,7 +339,7 @@ public final class Http2Connection implements Closeable {
       }
       pingId = nextPingId;
       nextPingId += 2;
-      if (pings == null) pings = new LinkedHashMap<>();
+      if (pings == null) pings = new LinkedHashMap<Integer, Ping>();
       pings.put(pingId, ping);
     }
     writePing(false, pingId, 0x4f4b6f6b /* ASCII "OKok" */, ping);
@@ -774,7 +774,7 @@ public final class Http2Connection implements Closeable {
   }
 
   // Guarded by this.
-  final Set<Integer> currentPushRequests = new LinkedHashSet<>();
+  final Set<Integer> currentPushRequests = new LinkedHashSet<Integer>();
 
   void pushRequestLater(final int streamId, final List<Header> requestHeaders) {
     synchronized (this) {

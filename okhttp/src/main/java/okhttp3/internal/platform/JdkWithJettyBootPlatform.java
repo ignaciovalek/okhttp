@@ -53,15 +53,20 @@ class JdkWithJettyBootPlatform extends Platform {
       Object provider = Proxy.newProxyInstance(Platform.class.getClassLoader(),
           new Class[] {clientProviderClass, serverProviderClass}, new JettyNegoProvider(names));
       putMethod.invoke(null, sslSocket, provider);
-    } catch (InvocationTargetException | IllegalAccessException e) {
+    } catch (InvocationTargetException e) {
       throw assertionError("unable to set alpn", e);
-    }
+    } catch (IllegalAccessException e) {
+      throw assertionError("unable to set alpn", e);
+    }	
+    
   }
 
   @Override public void afterHandshake(SSLSocket sslSocket) {
     try {
       removeMethod.invoke(null, sslSocket);
-    } catch (IllegalAccessException | InvocationTargetException e) {
+    } catch (IllegalAccessException e) {
+      throw assertionError("unable to remove alpn", e);
+    } catch (InvocationTargetException e) {
       throw assertionError("unable to remove alpn", e);
     }
   }
@@ -76,7 +81,9 @@ class JdkWithJettyBootPlatform extends Platform {
         return null;
       }
       return provider.unsupported ? null : provider.selected;
-    } catch (InvocationTargetException | IllegalAccessException e) {
+    } catch (InvocationTargetException e) {
+      throw assertionError("unable to get selected protocol", e);
+    } catch (IllegalAccessException e) {
       throw assertionError("unable to get selected protocol", e);
     }
   }
@@ -94,7 +101,8 @@ class JdkWithJettyBootPlatform extends Platform {
       Method removeMethod = negoClass.getMethod("remove", SSLSocket.class);
       return new JdkWithJettyBootPlatform(
           putMethod, getMethod, removeMethod, clientProviderClass, serverProviderClass);
-    } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+    } catch (ClassNotFoundException ignored) {
+    } catch (NoSuchMethodException ignored) {
     }
 
     return null;

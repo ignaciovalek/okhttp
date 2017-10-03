@@ -58,7 +58,7 @@ public final class CipherSuite {
    * Holds interned instances. This needs to be above the of() calls below so that it's
    * initialized by the time those parts of {@code <clinit>()} run. Guarded by CipherSuite.class.
    */
-  private static final Map<String, CipherSuite> INSTANCES = new TreeMap<>(ORDER_BY_NAME);
+  private static final Map<String, CipherSuite> INSTANCES = new TreeMap<String, CipherSuite>(ORDER_BY_NAME);
 
   // Last updated 2016-07-03 using cipher suites from Android 24 and Java 9.
 
@@ -405,7 +405,7 @@ public final class CipherSuite {
   }
 
   static List<CipherSuite> forJavaNames(String... cipherSuites) {
-    List<CipherSuite> result = new ArrayList<>(cipherSuites.length);
+    List<CipherSuite> result = new ArrayList<CipherSuite>(cipherSuites.length);
     for (String cipherSuite : cipherSuites) {
       result.add(forJavaName(cipherSuite));
     }

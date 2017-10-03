@@ -51,9 +51,10 @@ public final class PublicSuffixListGenerator {
     Request request = new Request.Builder()
         .url("https://publicsuffix.org/list/public_suffix_list.dat")
         .build();
-    SortedSet<ByteString> sortedRules = new TreeSet<>();
-    SortedSet<ByteString> sortedExceptionRules = new TreeSet<>();
-    try (Response response = client.newCall(request).execute()) {
+    SortedSet<ByteString> sortedRules = new TreeSet<ByteString>();
+    SortedSet<ByteString> sortedExceptionRules = new TreeSet<ByteString>();
+    Response response = client.newCall(request).execute();
+    try {
       BufferedSource source = response.body().source();
       int totalRuleBytes = 0;
       int totalExceptionRuleBytes = 0;
@@ -83,7 +84,8 @@ public final class PublicSuffixListGenerator {
       }
 
       Sink fileSink = Okio.sink(new File(resources, PublicSuffixDatabase.PUBLIC_SUFFIX_RESOURCE));
-      try (BufferedSink sink = Okio.buffer(new GzipSink(fileSink))) {
+      BufferedSink sink = Okio.buffer(new GzipSink(fileSink));
+      try {
         sink.writeInt(totalRuleBytes);
         for (ByteString domain : sortedRules) {
           sink.write(domain).writeByte('\n');
@@ -93,7 +95,13 @@ public final class PublicSuffixListGenerator {
         for (ByteString domain : sortedExceptionRules) {
           sink.write(domain).writeByte('\n');
         }
+      } finally {
+    	  if (sink != null) 
+    		  sink.close();
       }
+    } finally {
+    	if (response != null)
+    		response.close();
     }
   }
 

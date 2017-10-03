@@ -99,10 +99,10 @@ public final class RealWebSocket implements WebSocket, WebSocketReader.FrameCall
   private Streams streams;
 
   /** Outgoing pongs in the order they should be written. */
-  private final ArrayDeque<ByteString> pongQueue = new ArrayDeque<>();
+  private final ArrayDeque<ByteString> pongQueue = new ArrayDeque<ByteString>();
 
   /** Outgoing messages and close frames in the order they should be written. */
-  private final ArrayDeque<Object> messageAndCloseQueue = new ArrayDeque<>();
+  private final ArrayDeque<Object> messageAndCloseQueue = new ArrayDeque<Object>();
 
   /** The total size in bytes of enqueued but not yet transmitted messages. */
   private long queueSize;

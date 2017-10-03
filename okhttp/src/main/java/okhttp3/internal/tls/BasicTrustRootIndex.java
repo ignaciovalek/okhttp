@@ -28,12 +28,12 @@ public final class BasicTrustRootIndex implements TrustRootIndex {
   private final Map<X500Principal, Set<X509Certificate>> subjectToCaCerts;
 
   public BasicTrustRootIndex(X509Certificate... caCerts) {
-    subjectToCaCerts = new LinkedHashMap<>();
+    subjectToCaCerts = new LinkedHashMap<X500Principal, Set<X509Certificate>>();
     for (X509Certificate caCert : caCerts) {
       X500Principal subject = caCert.getSubjectX500Principal();
       Set<X509Certificate> subjectCaCerts = subjectToCaCerts.get(subject);
       if (subjectCaCerts == null) {
-        subjectCaCerts = new LinkedHashSet<>(1);
+        subjectCaCerts = new LinkedHashSet<X509Certificate>(1);
         subjectToCaCerts.put(subject, subjectCaCerts);
       }
       subjectCaCerts.add(caCert);

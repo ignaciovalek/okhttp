@@ -264,7 +264,7 @@ public final class Http2Stream {
         open = isOpen();
         notifyAll();
       } else {
-        List<Header> newHeaders = new ArrayList<>();
+        List<Header> newHeaders = new ArrayList<Header>();
         newHeaders.addAll(responseHeaders);
         newHeaders.add(null); // Delimit separate blocks of headers with null.
         newHeaders.addAll(headers);

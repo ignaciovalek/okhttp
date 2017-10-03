@@ -20,6 +20,7 @@
 
   <modules>
     <module>okhttp</module>
+<!--
     <module>okhttp-tests</module>
 
     <module>okhttp-android-support</module>
@@ -34,6 +35,7 @@
     <module>mockwebserver</module>
     <module>samples</module>
     <module>benchmarks</module>
+-->
   </modules>
 
   <properties>
@@ -48,7 +50,7 @@
     <apache.http.version>4.2.2</apache.http.version>
     <bouncycastle.version>1.50</bouncycastle.version>
     <guava.version>16.0</guava.version>
-    <java.version>1.7</java.version>
+    <java.version>1.6</java.version>
     <moshi.version>1.1.0</moshi.version>
     <okio.version>1.13.0</okio.version>
 
